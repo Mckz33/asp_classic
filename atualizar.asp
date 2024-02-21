@@ -1,27 +1,20 @@
 <%
-' Verifica se a requisição é um POST (ou seja, se o formulário foi submetido)
 If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
-    ' Recupera os dados do formulário
     Dim userEmail, newEmail, newPassword
     userEmail = Request.Form("userEmail")
     newEmail = Request.Form("newEmail")
     newPassword = Request.Form("newPassword")
     
-    ' Validação básica (você pode adicionar validações adicionais conforme necessário)
     If userEmail <> "" And newEmail <> "" And newPassword <> "" Then
-        ' Conecta ao banco de dados MariaDB
         Dim conn
         Set conn = Server.CreateObject("ADODB.Connection")
         conn.Open "DRIVER={MariaDB ODBC 3.1 Driver}; SERVER=localhost; DATABASE=novo; USER=root; PASSWORD=root; OPTION=3;"
         
-        ' Query SQL para atualizar os dados do usuário com o email especificado
         Dim sql
         sql = "UPDATE usuario SET email = '" & newEmail & "', PASSWORD = '" & newPassword & "' WHERE email = '" & userEmail & "'"
         
-        ' Executa a query SQL
         conn.Execute(sql)
         
-        ' Fecha a conexão
         conn.Close
         Set conn = Nothing
         

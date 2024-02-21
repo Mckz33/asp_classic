@@ -1,26 +1,19 @@
 <%
-' Verifica se a requisição é um POST (ou seja, se o formulário foi submetido)
 If Request.ServerVariables("REQUEST_METHOD") = "POST" Then
-    ' Recupera os dados do formulário
     Dim email, senha
     email = Request.Form("email")
     senha = Request.Form("senha")
     
-    ' Validação básica (você pode adicionar validações mais robustas conforme necessário)
     If email <> "" And senha <> "" Then
-        ' Conecta ao banco de dados MariaDB
         Dim conn
         Set conn = Server.CreateObject("ADODB.Connection")
         conn.Open "DRIVER={MariaDB ODBC 3.1 Driver}; SERVER=localhost; DATABASE=novo; USER=root; PASSWORD=root; OPTION=3;"
         
-        ' Query SQL para inserir os dados na tabela
         Dim sql
         sql = "INSERT INTO usuario (email, PASSWORD) VALUES ('" & email & "', '" & senha & "')"
-        
-        ' Executa a query SQL
+    
         conn.Execute(sql)
         
-        ' Fecha a conexão
         conn.Close
         Set conn = Nothing
         
